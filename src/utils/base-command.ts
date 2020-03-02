@@ -1,13 +1,13 @@
 import { Command, flags } from '@oclif/command';
 import Axios, { AxiosInstance } from 'axios';
-import { Role, RoleCreatorDto } from '../models';
+import { Role, RoleCreatorDto, User } from '../models';
 
 export abstract class BaseCommand extends Command {
   static baseFlags = {
     help: flags.help({ char: 'h' }),
     url: flags.string({
       char: 'u',
-      description: 'URL of the accound service',
+      description: 'URL of the account service',
       default: 'http://localhost:3000'
     })
   };
@@ -45,6 +45,11 @@ export abstract class BaseCommand extends Command {
 
   async deleteRole(roleId: number): Promise<boolean> {
     const response = await this.apiClient.delete(`roles/${roleId}`);
+    return response.data;
+  }
+
+  async getUsers(): Promise<User[]> {
+    const response = await this.apiClient.get('users');
     return response.data;
   }
 }

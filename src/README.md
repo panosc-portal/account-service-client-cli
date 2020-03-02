@@ -12,7 +12,7 @@ A PaNOSC Account Service CLI client to test the Account Service APIs
 
 <!-- usage -->
 
-Note: The <i>account-service</i> command is equialent to ./bin/run
+Note: The <i>account-service</i> command is equivalent to ./bin/run
 
 ```sh-session
 $ npm install
