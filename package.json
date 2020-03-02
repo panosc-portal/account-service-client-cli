@@ -1,0 +1,21 @@
+{
+  "name": "account-service-client-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://code.ill.fr/panosc/data-analysis-services/account-service-client-cli.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "console-table-printer": "^1.1.62",
+    "inquirer": "^7.0.5",
+    "oclif": "^1.15.2"
+  }
+}
