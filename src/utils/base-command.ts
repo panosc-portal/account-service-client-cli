@@ -9,6 +9,10 @@ export abstract class BaseCommand extends Command {
       char: 'u',
       description: 'URL of the account service',
       default: 'http://localhost:3000'
+    }),
+    token: flags.string({
+      char: 't',
+      description: 'access token'
     })
   };
 
@@ -31,6 +35,15 @@ export abstract class BaseCommand extends Command {
     }
 
     return this._apiClient;
+  }
+
+  async me(token: string): Promise<Role[]> {
+    const response = await this.apiClient.get('roles', {
+      headers: {
+        access_token: token
+      }
+    });
+    return response.data;
   }
 
   async getRoles(): Promise<Role[]> {
