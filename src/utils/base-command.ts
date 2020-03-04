@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command';
 import Axios, { AxiosInstance } from 'axios';
-import { Role, RoleCreatorDto, User } from '../models';
+import { Role, RoleCreatorDto, User, UserCreatorDto } from '../models';
 
 export abstract class BaseCommand extends Command {
   static baseFlags = {
@@ -43,6 +43,11 @@ export abstract class BaseCommand extends Command {
     return response.data;
   }
 
+  async deleteAllRoles(): Promise<boolean> {
+    const response = await this.apiClient.delete(`roles`);
+    return response.data;
+  }
+
   async deleteRole(roleId: number): Promise<boolean> {
     const response = await this.apiClient.delete(`roles/${roleId}`);
     return response.data;
@@ -50,6 +55,21 @@ export abstract class BaseCommand extends Command {
 
   async getUsers(): Promise<User[]> {
     const response = await this.apiClient.get('users');
+    return response.data;
+  }
+
+  async createUser(user: UserCreatorDto): Promise<User> {
+    const response = await this.apiClient.post('users', user);
+    return response.data;
+  }
+
+  async deleteAllUsers(): Promise<boolean> {
+    const response = await this.apiClient.delete(`users`);
+    return response.data;
+  }
+
+  async deleteUser(userId: number): Promise<boolean> {
+    const response = await this.apiClient.delete(`users/${userId}`);
     return response.data;
   }
 }

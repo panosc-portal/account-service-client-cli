@@ -1,15 +1,13 @@
-import { Role } from '../role.model';
-
-export class RoleCreatorDto {
+export class UserCreatorDto {
   username: string;
   uid: number;
   gid: number;
   email: string;
-  homePath: string;
   active: boolean;
-  role: Role;
+  homedir: string;
+  role: number;
 
-  constructor(data?: Partial<RoleCreatorDto>) {
+  constructor(data?: Partial<UserCreatorDto>) {
     Object.assign(this, data);
   }
 }

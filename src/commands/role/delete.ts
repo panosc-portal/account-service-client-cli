@@ -16,6 +16,11 @@ export default class RoleDeleteCommand extends BaseCommand {
 
     const roles: Role[] = await this.getRoles();
 
+    if (roles.length === 0) {
+      console.log('No entry found in role database.');
+      return;
+    }
+
     const questions = [
       {
         type: 'list',

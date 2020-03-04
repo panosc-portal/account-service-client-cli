@@ -21,7 +21,7 @@ export default class RoleListCommand extends BaseCommand {
 
       printTable(roleTableData);
     } else {
-      console.log('The service contains no roles');
+      console.log('The role database is empty.');
     }
   }
 }

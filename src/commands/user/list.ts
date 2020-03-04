@@ -21,7 +21,7 @@ export default class UserListCommand extends BaseCommand {
 
       printTable(userTableData);
     } else {
-      console.log('The service contains no users');
+      console.log('The user database is empty.');
     }
   }
 }

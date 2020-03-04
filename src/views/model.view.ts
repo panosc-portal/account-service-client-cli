@@ -15,8 +15,8 @@ export function mapUser(user: User): any {
     Uid: user.uid,
     Gid: user.gid,
     Email: user.email,
-    HomePath: user.homePath,
+    Homedir: user.homedir,
     Active: user.active,
-    Role: user.role
+    Role: user.role.id
   };
 }

@@ -6,7 +6,7 @@ export class User {
   uid: number;
   gid: number;
   email: string;
-  homePath: string;
+  homedir: string;
   active: boolean;
   createdAt: Date;
   role: Role;
