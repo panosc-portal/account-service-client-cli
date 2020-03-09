@@ -38,7 +38,7 @@ export abstract class BaseCommand extends Command {
   }
 
   async me(token: string): Promise<Role[]> {
-    const response = await this.apiClient.get('roles', {
+    const response = await this.apiClient.get('me', {
       headers: {
         access_token: token
       }

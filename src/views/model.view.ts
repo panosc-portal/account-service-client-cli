@@ -1,4 +1,4 @@
-import { Role, User } from '../models';
+import { Role, User } from "../models";
 
 export function mapRole(role: Role): any {
   return {
@@ -17,6 +17,6 @@ export function mapUser(user: User): any {
     Email: user.email,
     Homedir: user.homedir,
     Active: user.active,
-    Role: user.role.id
+    Role: user.role == null ? "1" : user.role.id
   };
 }
