@@ -1,9 +1,9 @@
-import { User } from '../../models';
-import * as inquirer from 'inquirer';
-import { BaseCommand } from '../../utils';
+import { User } from "../../models";
+import * as inquirer from "inquirer";
+import { BaseCommand } from "../../utils";
 
 export default class UserDeleteCommand extends BaseCommand {
-  static description = 'Deletes a user from the account service';
+  static description = "Deletes a user";
 
   static examples = [`$ account-service user:delete`];
 
@@ -17,15 +17,15 @@ export default class UserDeleteCommand extends BaseCommand {
     const users: User[] = await this.getUsers();
 
     if (users.length === 0) {
-      console.log('No entry found in user database.');
+      console.log("No user found in users database.");
       return;
     }
 
     const questions = [
       {
-        type: 'list',
-        name: 'userId',
-        message: 'Choose a user to delete',
+        type: "list",
+        name: "userId",
+        message: "Choose a user to delete",
         filter: Number,
         choices: users.map(user => {
           return {
@@ -42,9 +42,9 @@ export default class UserDeleteCommand extends BaseCommand {
       console.log(`Deleting user ${answers.userId}...`);
       const done: boolean = await this.deleteUser(answers.userId);
       if (done) {
-        console.log('... done');
+        console.log("... done");
       } else {
-        console.error('... failed');
+        console.error("... failed");
       }
     } catch (error) {
       console.error(error.message);

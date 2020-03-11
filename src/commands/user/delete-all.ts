@@ -1,9 +1,9 @@
-import { User } from '../../models';
-import * as inquirer from 'inquirer';
-import { BaseCommand } from '../../utils';
+import { User } from "../../models";
+import * as inquirer from "inquirer";
+import { BaseCommand } from "../../utils";
 
 export default class UserDeleteAllCommand extends BaseCommand {
-  static description = 'Deletes all users from the account service';
+  static description = "Deletes all users";
 
   static examples = [`$ account-service user:delete-all`];
 
@@ -17,7 +17,7 @@ export default class UserDeleteAllCommand extends BaseCommand {
     const users: User[] = await this.getUsers();
 
     if (users.length === 0) {
-      console.log('No entry found in user database.');
+      console.log("No entry found in user database.");
       return;
     }
 
@@ -25,9 +25,9 @@ export default class UserDeleteAllCommand extends BaseCommand {
       console.log(`Deleting all users...`);
       const done: boolean = await this.deleteAllUsers();
       if (done) {
-        console.log('... done');
+        console.log("... done");
       } else {
-        console.error('... failed');
+        console.error("... failed");
       }
     } catch (error) {
       console.error(error.message);

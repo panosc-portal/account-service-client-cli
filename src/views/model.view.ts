@@ -9,6 +9,8 @@ export function mapRole(role: Role): any {
 }
 
 export function mapUser(user: User): any {
+  const roleNames = user.roles.map(({ name }) => name);
+
   return {
     Id: user.id,
     Usernames: user.username,
@@ -17,6 +19,6 @@ export function mapUser(user: User): any {
     Email: user.email,
     Homedir: user.homedir,
     Active: user.active,
-    Role: user.role == null ? "1" : user.role.id
+    Roles: roleNames
   };
 }

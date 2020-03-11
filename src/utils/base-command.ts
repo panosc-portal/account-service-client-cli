@@ -1,18 +1,18 @@
-import { Command, flags } from '@oclif/command';
-import Axios, { AxiosInstance } from 'axios';
-import { Role, RoleCreatorDto, User, UserCreatorDto } from '../models';
+import { Command, flags } from "@oclif/command";
+import Axios, { AxiosInstance } from "axios";
+import { Role, RoleCreatorDto, User, UserCreatorDto } from "../models";
 
 export abstract class BaseCommand extends Command {
   static baseFlags = {
-    help: flags.help({ char: 'h' }),
+    help: flags.help({ char: "h" }),
     url: flags.string({
-      char: 'u',
-      description: 'URL of the account service',
-      default: 'http://localhost:3000'
+      char: "u",
+      description: "URL of the account service",
+      default: "http://localhost:3000"
     }),
     token: flags.string({
-      char: 't',
-      description: 'access token'
+      char: "t",
+      description: "access token"
     })
   };
 
@@ -27,9 +27,9 @@ export abstract class BaseCommand extends Command {
     if (this._apiClient == null) {
       this._apiClient = Axios.create({
         baseURL: `${this._accountServiceUrl}/api/v1`,
-        responseType: 'json',
+        responseType: "json",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         }
       });
     }
@@ -38,7 +38,7 @@ export abstract class BaseCommand extends Command {
   }
 
   async me(token: string): Promise<Role[]> {
-    const response = await this.apiClient.get('me', {
+    const response = await this.apiClient.get("me", {
       headers: {
         access_token: token
       }
@@ -47,12 +47,12 @@ export abstract class BaseCommand extends Command {
   }
 
   async getRoles(): Promise<Role[]> {
-    const response = await this.apiClient.get('roles');
+    const response = await this.apiClient.get("roles");
     return response.data;
   }
 
   async createRole(role: RoleCreatorDto): Promise<Role> {
-    const response = await this.apiClient.post('roles', role);
+    const response = await this.apiClient.post("roles", role);
     return response.data;
   }
 
@@ -67,12 +67,27 @@ export abstract class BaseCommand extends Command {
   }
 
   async getUsers(): Promise<User[]> {
-    const response = await this.apiClient.get('users');
+    const response = await this.apiClient.get("users");
     return response.data;
   }
 
   async createUser(user: UserCreatorDto): Promise<User> {
-    const response = await this.apiClient.post('users', user);
+    const response = await this.apiClient.post("users", user);
+    return response.data;
+  }
+
+  async addUserRole(userId: number, roleId: number): Promise<User> {
+    const response = await this.apiClient.post(
+      `/users/${userId}/roles/${roleId}`,
+      { userId: userId, roleId: roleId }
+    );
+    return response.data;
+  }
+
+  async deleteUserRole(userId: number, roleId: number): Promise<User> {
+    const response = await this.apiClient.delete(
+      `/users/${userId}/roles/${roleId}`
+    );
     return response.data;
   }
 

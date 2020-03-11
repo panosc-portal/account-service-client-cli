@@ -1,4 +1,4 @@
-import { Role } from './role.model';
+import { Role } from "./role.model";
 
 export class User {
   id: number;
@@ -9,7 +9,7 @@ export class User {
   homedir: string;
   active: boolean;
   createdAt: Date;
-  role: Role;
+  roles: Role[];
 
   constructor(data?: Partial<User>) {
     Object.assign(this, data);

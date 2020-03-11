@@ -1,22 +1,17 @@
-import { mapUser } from '../../views/model.view';
-import { printTable } from 'console-table-printer';
-import { Role, UserCreatorDto } from '../../models';
-import * as inquirer from 'inquirer';
-import { BaseCommand } from '../../utils';
+import { mapUser } from "../../views/model.view";
+import { printTable } from "console-table-printer";
+import { Role, UserCreatorDto, RoleCreatorDto } from "../../models";
+import * as inquirer from "inquirer";
+import { BaseCommand, validNumber } from "../../utils";
 
 export default class UserAddCommand extends BaseCommand {
-  static description = 'Adds a user to the account service';
+  static description = "Adds a user";
 
   static examples = [`$ account-service user:add`];
 
   static flags = Object.assign({}, BaseCommand.baseFlags);
 
   async run() {
-    const validNumber = function(value: string) {
-      const valid = !isNaN(Number(value));
-      return valid || 'Please enter a number';
-    };
-
     const { args, flags } = this.parse(UserAddCommand);
 
     this.accountServiceUrl = flags.url;
@@ -25,48 +20,48 @@ export default class UserAddCommand extends BaseCommand {
 
     const questions = [
       {
-        type: 'input',
-        name: 'username',
-        message: 'Enter a username',
+        type: "input",
+        name: "username",
+        message: "Enter a username",
         validate: function(value: string) {
-          return value != null || 'The name must be a non-null string';
+          return value != null || "The name must be a non-null string";
         }
       },
       {
-        type: 'input',
-        name: 'uid',
+        type: "input",
+        name: "uid",
         filter: Number,
         message: "Enter user's uid",
         validate: validNumber
       },
       {
-        type: 'input',
-        name: 'gid',
+        type: "input",
+        name: "gid",
         filter: Number,
         message: "Enter user's gid",
         validate: validNumber
       },
       {
-        type: 'input',
-        name: 'active',
+        type: "input",
+        name: "active",
         filter: Boolean,
-        message: 'Activate user ?',
+        message: "Activate user ?",
         validate: validNumber
       },
       {
-        type: 'input',
-        name: 'email',
+        type: "input",
+        name: "email",
         message: "Enter user's email"
       },
       {
-        type: 'input',
-        name: 'homedir',
+        type: "input",
+        name: "homedir",
         message: "Enter user's home directory"
       },
       {
-        type: 'list',
-        name: 'role',
-        message: 'Choose a role',
+        type: "list",
+        name: "role",
+        message: "Choose a role",
         validate: validNumber,
         filter: Number,
         choices: roles.map(role => {
@@ -80,8 +75,13 @@ export default class UserAddCommand extends BaseCommand {
 
     try {
       const answers = await inquirer.prompt<{
-        name: string;
-        description: string;
+        username: string;
+        uid: number;
+        gid: number;
+        active: boolean;
+        email: string;
+        homedir: string;
+        role: number;
       }>(questions);
 
       const userCreator = new UserCreatorDto();
@@ -91,13 +91,13 @@ export default class UserAddCommand extends BaseCommand {
       userCreator.active = answers.active;
       userCreator.email = answers.email;
       userCreator.homedir = answers.homedir;
-      userCreator.role = answers.role;
+      userCreator.roles = [answers.role];
 
       console.log(JSON.stringify(userCreator));
 
-      console.log('Creating user...');
+      console.log("Creating user...");
       const user = await this.createUser(userCreator);
-      console.log('... done');
+      console.log("... done");
       printTable([mapUser(user)]);
     } catch (error) {
       console.error(error.message);

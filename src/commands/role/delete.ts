@@ -1,9 +1,9 @@
-import { Role } from '../../models';
-import * as inquirer from 'inquirer';
-import { BaseCommand } from '../../utils';
+import { Role } from "../../models";
+import * as inquirer from "inquirer";
+import { BaseCommand } from "../../utils";
 
 export default class RoleDeleteCommand extends BaseCommand {
-  static description = 'Deletes a role from the account service';
+  static description = "Deletes a role";
 
   static examples = [`$ account-service role:delete`];
 
@@ -17,15 +17,15 @@ export default class RoleDeleteCommand extends BaseCommand {
     const roles: Role[] = await this.getRoles();
 
     if (roles.length === 0) {
-      console.log('No entry found in role database.');
+      console.log("No entry found in role database.");
       return;
     }
 
     const questions = [
       {
-        type: 'list',
-        name: 'roleId',
-        message: 'Choose a role to delete',
+        type: "list",
+        name: "roleId",
+        message: "Choose a role to delete",
         filter: Number,
         choices: roles.map(role => {
           return {
@@ -42,9 +42,9 @@ export default class RoleDeleteCommand extends BaseCommand {
       console.log(`Deleting role ${answers.roleId}...`);
       const done: boolean = await this.deleteRole(answers.roleId);
       if (done) {
-        console.log('... done');
+        console.log("... done");
       } else {
-        console.error('... failed');
+        console.error("... failed");
       }
     } catch (error) {
       console.error(error.message);

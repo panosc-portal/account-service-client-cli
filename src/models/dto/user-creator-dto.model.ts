@@ -5,7 +5,7 @@ export class UserCreatorDto {
   email: string;
   active: boolean;
   homedir: string;
-  role: number;
+  roles: number[];
 
   constructor(data?: Partial<UserCreatorDto>) {
     Object.assign(this, data);
