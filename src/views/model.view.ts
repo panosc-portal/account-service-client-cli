@@ -1,4 +1,4 @@
-import { Role, User } from "../models";
+import { Account, Role } from '../models';
 
 export function mapRole(role: Role): any {
   return {
@@ -8,17 +8,18 @@ export function mapRole(role: Role): any {
   };
 }
 
-export function mapUser(user: User): any {
-  const roleNames = user.roles.map(({ name }) => name);
+export function mapAccount(account: Account): any {
+  const roleNames = account.roles.map(({ name }) => name);
 
   return {
-    Id: user.id,
-    Usernames: user.username,
-    Uid: user.uid,
-    Gid: user.gid,
-    Email: user.email,
-    Homedir: user.homedir,
-    Active: user.active,
+    Id: account.id,
+    UserId: account.userId,
+    Usernames: account.username,
+    Uid: account.uid,
+    Gid: account.gid,
+    Email: account.email,
+    HomePath: account.homePath,
+    Active: account.active,
     Roles: roleNames
   };
 }
