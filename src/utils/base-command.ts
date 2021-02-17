@@ -1,6 +1,6 @@
-import { Command, flags } from '@oclif/command';
-import Axios, { AxiosInstance } from 'axios';
-import { Account, AccountCreatorDto, Role, RoleCreatorDto } from '../models';
+import { Command, flags } from "@oclif/command";
+import Axios, { AxiosInstance } from "axios";
+import { Role, User } from "../models";
 
 export abstract class BaseCommand extends Command {
   static baseFlags = {
@@ -26,8 +26,8 @@ export abstract class BaseCommand extends Command {
   protected get apiClient(): AxiosInstance {
     if (this._apiClient == null) {
       this._apiClient = Axios.create({
-        baseURL: `${this._accountServiceUrl}/api/v1`,
-        responseType: 'json',
+        baseURL: `${this._accountServiceUrl}/api`,
+        responseType: "json",
         headers: {
           'Content-Type': 'application/json'
         }
@@ -37,8 +37,8 @@ export abstract class BaseCommand extends Command {
     return this._apiClient;
   }
 
-  async me(token: string): Promise<Role[]> {
-    const response = await this.apiClient.get('me', {
+  async authenticate(token: string): Promise<Role[]> {
+    const response = await this.apiClient.get("authenticate", {
       headers: {
         access_token: token
       }
@@ -51,53 +51,23 @@ export abstract class BaseCommand extends Command {
     return response.data;
   }
 
-  async createRole(role: RoleCreatorDto): Promise<Role> {
-    const response = await this.apiClient.post('roles', role);
+  async getUsers(): Promise<User[]> {
+    const response = await this.apiClient.get("users");
     return response.data;
   }
 
-  async deleteAllRoles(): Promise<boolean> {
-    const response = await this.apiClient.delete(`roles`);
-    return response.data;
-  }
-
-  async deleteRole(roleId: number): Promise<boolean> {
-    const response = await this.apiClient.delete(`roles/${roleId}`);
-    return response.data;
-  }
-
-  async getAccounts(): Promise<Account[]> {
-    const response = await this.apiClient.get('accounts');
-    return response.data;
-  }
-
-  async createAccount(account: AccountCreatorDto): Promise<Account> {
-    const response = await this.apiClient.post('accounts', account);
-    return response.data;
-  }
-
-  async addAccountRole(accountId: number, roleId: number): Promise<Account> {
+  async addUserRole(userId: number, roleId: number): Promise<User> {
     const response = await this.apiClient.post(
-      `/accounts/${accountId}/roles/${roleId}`,
-      { accountId: accountId, roleId: roleId }
+      `/users/${userId}/roles/${roleId}`,
+      { userId: userId, roleId: roleId }
     );
     return response.data;
   }
 
-  async deleteAccountRole(accountId: number, roleId: number): Promise<Account> {
+  async deleteUserRole(userId: number, roleId: number): Promise<User> {
     const response = await this.apiClient.delete(
-      `/accounts/${accountId}/roles/${roleId}`
+      `/users/${userId}/roles/${roleId}`
     );
-    return response.data;
-  }
-
-  async deleteAllAccounts(): Promise<boolean> {
-    const response = await this.apiClient.delete(`accounts`);
-    return response.data;
-  }
-
-  async deleteAccount(accountId: number): Promise<boolean> {
-    const response = await this.apiClient.delete(`accounts/${accountId}`);
     return response.data;
   }
 }

@@ -1,28 +1,27 @@
-import { Account, Role } from '../../models';
+import { User, Role } from '../../models';
 import { BaseCommand, validNumber } from '../../utils';
-import { mapAccount } from '../../views/model.view';
+import { mapUser } from '../../views/model.view';
 import { printTable } from 'console-table-printer';
 import * as inquirer from 'inquirer';
 
-export default class AccountDeleteRoleCommand extends BaseCommand {
-  static description = 'Deletes a role from an account';
+export default class UserDeleteRoleCommand extends BaseCommand {
+  static description = 'Deletes a role from a user';
 
-  static examples = [`$ account-service account:delete-role`];
+  static examples = [`$ account-service user:delete-role`];
 
   static flags = Object.assign({}, BaseCommand.baseFlags);
 
   async run() {
-    const { args, flags } = this.parse(AccountDeleteRoleCommand);
+    const { args, flags } = this.parse(UserDeleteRoleCommand);
 
     this.accountServiceUrl = flags.url;
 
     // Checks that the accounts database has at least one entry
-    const accounts: Account[] = await this.getAccounts();
-    if (accounts.length === 0) {
-      console.log('No account found in accounts database.');
+    const users: User[] = await this.getUsers();
+    if (users.length === 0) {
+      console.log('No user found in users database.');
       return;
     }
-
     // Checks that the roles database has at least one entry
     const roles: Role[] = await this.getRoles();
     if (roles.length === 0) {
@@ -33,13 +32,13 @@ export default class AccountDeleteRoleCommand extends BaseCommand {
     const questions = [
       {
         type: 'list',
-        name: 'accountId',
-        message: 'Choose an account',
+        name: 'userId',
+        message: 'Choose a user',
         filter: Number,
-        choices: accounts.map(account => {
+        choices: users.map(user => {
           return {
-            name: `${account.username} (id=${account.id})`,
-            value: account.id
+            name: `${user.firstName} ${user.lastName} (id=${user.id})`,
+            value: user.id
           };
         })
       },
@@ -60,17 +59,17 @@ export default class AccountDeleteRoleCommand extends BaseCommand {
 
     try {
       const answers = await inquirer.prompt<{
-        accountId: number;
+        userId: number;
         roleId: number;
       }>(questions);
 
-      console.log('Delete role from account...');
-      const account = await this.deleteAccountRole(
-        answers.accountId,
+      console.log('Delete role from user...');
+      const user = await this.deleteUserRole(
+        answers.userId,
         answers.roleId
       );
       console.log('... done');
-      printTable([mapAccount(account)]);
+      printTable([mapUser(user)]);
     } catch (error) {
       console.error(error.message);
     }

@@ -3,9 +3,9 @@ import { printTable } from 'console-table-printer';
 import { BaseCommand } from '../utils';
 
 export default class MeCommand extends BaseCommand {
-  static description = 'Get info about me';
+  static description = 'Obtain an authentication token';
 
-  static examples = [`$ account-service me`];
+  static examples = [`$ account-service authenticate`];
 
   static flags = Object.assign({}, BaseCommand.baseFlags);
 
@@ -14,7 +14,7 @@ export default class MeCommand extends BaseCommand {
 
     this.accountServiceUrl = flags.url;
 
-    const me = await this.me(flags.token);
+    const me = await this.authenticate(flags.token);
 
     console.log(me);
   }
