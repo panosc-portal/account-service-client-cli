@@ -60,7 +60,6 @@ export abstract class BaseCommand extends Command {
       ]
     }
     const response = await this.apiClient.post("users/search", query);
-    console.log(JSON.stringify(response.data));
     return response.data.data;
   }
 
