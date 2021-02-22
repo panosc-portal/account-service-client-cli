@@ -52,8 +52,16 @@ export abstract class BaseCommand extends Command {
   }
 
   async getUsers(): Promise<User[]> {
-    const response = await this.apiClient.get("users");
-    return response.data;
+    const query = {
+      alias: 'user',
+      pagination: { limit: 100, offset: 0},
+      join: [
+        {member: 'user.roles', alias: 'role', select: true, type: 'LEFT_OUTER_JOIN'}
+      ]
+    }
+    const response = await this.apiClient.post("users/search", query);
+    console.log(JSON.stringify(response.data));
+    return response.data.data;
   }
 
   async addUserRole(userId: number, roleId: number): Promise<User> {
